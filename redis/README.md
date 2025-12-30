@@ -5,8 +5,12 @@ This project contains Python scripts to demonstrate various Redis use cases.
 ## Prerequisites
 
 1.  **Redis Server**: Ensure you have a Redis server running locally on the default port (6379).
-    *   If you have Docker, you can run: `docker run --name redis-demo -p 6379:6379 -d redis`
-    *   Or install it via your package manager (e.g., `brew install redis` on macOS).
+    *   **Option A (Local Install)**:
+        *   Install: `brew install redis` (on macOS)
+        *   Start in background: `redis-server --daemonize yes`
+        *   Stop: `redis-cli shutdown`
+    *   **Option B (Docker)**:
+        *   Run: `docker run --name redis-demo -p 6379:6379 -d redis`
 
 2.  **Python Environment**:
     *   Create a virtual environment: `python3 -m venv .venv`
@@ -62,3 +66,34 @@ Run with:
 ```bash
 python geo_demo.py
 ```
+
+## Resources
+
+*   [Redis Commands Documentation](https://redis.io/commands) - Official reference for all Redis commands.
+
+## Using Redis CLI
+
+You can also interact with Redis directly using the command line interface.
+
+1.  Start the CLI:
+    ```bash
+    redis-cli
+    ```
+
+2.  Try some commands corresponding to the demos:
+
+    *   **Sorted Sets**:
+        ```redis
+        ZADD game_leaderboard 100 Alice 85 Bob
+        ZRANGE game_leaderboard 0 -1 WITHSCORES
+        ```
+
+    *   **Pub/Sub** (Requires two terminal windows):
+        *   Window 1: `SUBSCRIBE test_channel`
+        *   Window 2: `PUBLISH test_channel "Hello from CLI"`
+
+    *   **Geospatial**:
+        ```redis
+        GEOADD cities_locations -122.4194 37.7749 "San Francisco"
+        GEODIST cities_locations "San Francisco" "Los Angeles" km
+        ```
