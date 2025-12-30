@@ -38,3 +38,27 @@ Run with:
 ```bash
 python sorted_set_demo.py
 ```
+
+### 3. Lua Script Demo (`lua_script_demo.py`)
+
+Demonstrates using Lua scripts for atomic transactions.
+- Implements an atomic money transfer between two accounts.
+- Checks balance and transfers only if sufficient funds exist.
+- Shows how to register and execute Lua scripts from Python.
+
+Run with:
+```bash
+python lua_script_demo.py
+```
+
+### 4. Geospatial Demo (`geo_demo.py`)
+
+Demonstrates Redis Geospatial capabilities.
+- Adds cities with latitude and longitude.
+- Calculates distances between cities.
+- Performs proximity searches (finding cities within a radius).
+
+Run with:
+```bash
+python geo_demo.py
+```
