@@ -67,6 +67,28 @@ Run with:
 python geo_demo.py
 ```
 
+### 5. Streams vs Pub/Sub (`stream_vs_pubsub.py`)
+
+Demonstrates the key difference between Redis Streams and Pub/Sub.
+- **Pub/Sub**: Shows that messages sent before a subscriber joins are lost (Fire-and-Forget).
+- **Streams**: Shows that messages are stored in a log and can be read later (Persistence).
+
+Run with:
+```bash
+python stream_vs_pubsub.py
+```
+
+### 6. Transactions Demo (`transaction_demo.py`)
+
+Demonstrates Redis Transactions and Optimistic Locking.
+- **Simple Transaction**: Uses `MULTI`/`EXEC` to run multiple commands atomically.
+- **Optimistic Locking**: Uses `WATCH` to handle race conditions (retrying if a value changes while processing).
+
+Run with:
+```bash
+python transaction_demo.py
+```
+
 ## Resources
 
 *   [Redis Commands Documentation](https://redis.io/commands) - Official reference for all Redis commands.
