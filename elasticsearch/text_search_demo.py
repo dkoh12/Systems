@@ -24,7 +24,7 @@ def setup_index():
                 },
                 "content": {
                     "type": "text",
-                    "analyzer": "standard" # Standard tokenization
+                    "analyzer": "english" # Handles stemming
                 },
                 "category": {
                     "type": "keyword"      # Exact match only (no tokenization)
@@ -78,15 +78,16 @@ def index_data():
 def search_demo():
     print("\n--- 1. Basic Match Query (Inverted Index) ---")
     # Searching for 'program' should match 'Programming' due to stemming in the 'english' analyzer
+    # We search in 'content' because that's where the word 'programming' appears.
     query = {
         "query": {
             "match": {
-                "title": "program" 
+                "content": "program" 
             }
         }
     }
     res = es.search(index=INDEX_NAME, body=query)
-    print(f"Search for 'program' in title (Expect matches due to stemming): Found {res['hits']['total']['value']}")
+    print(f"Search for 'program' in content (Expect matches due to stemming): Found {res['hits']['total']['value']}")
     for hit in res['hits']['hits']:
         print(f" - {hit['_source']['title']}")
 

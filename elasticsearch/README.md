@@ -8,6 +8,7 @@ This folder contains examples of using Elasticsearch for different search scenar
     The virtual environment is already set up. Activate it if needed:
     ```bash
     source .venv/bin/activate
+    pip install "elasticsearch<9"  # Ensure client version matches server (8.x)
     ```
 
 2.  **Elasticsearch Instance**:
