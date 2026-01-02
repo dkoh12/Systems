@@ -55,3 +55,62 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""
+KEYS *
+// to list all keys in redis
+
+https://redis.io/docs/latest/develop/pubsub/
+
+
+Redis pub/sub exhibits at-most-once message delivery.
+Once message is sent. There's no chance of it being sent again.
+If subscriber can't handle the message, the message is forever lost.
+
+Redis Streams
+Messages in streams are persisted.
+Supports both at-most-once and at-least-once delivery semantics
+
+
+PUBSUB CHANNELS
+// to see all active channels with at least 1 subscriber connected to it
+
+PUBSUB NUMSUB <channel>
+// to see number of people listening to a specific channel
+
+
+---
+
+Have 2 redis CLIs in 2 terminal windows
+
+SUBSCRIBE first second
+// returns “subscribe” <channel> <number of subscribed channels>
+
+subscribe first 1
+subscribe second 2
+
+UNSUBSCRIBE first
+// returns “unsubscribe” <channel> <number of subscribed channels>
+
+Unsubscribe first 1
+
+MESSAGE
+// when another client PUBLISHES
+// returns “message” <channel> <element>
+
+Message second HELLO
+
+2nd client
+PUBLISH second HELLO
+
+
+Sharded Pub/Sub introduced
+
+SSUBSCRIBE
+SUNSUBSCRIBE
+SPUBLISH 
+
+To implement sharded pub/sub
+
+
+"""

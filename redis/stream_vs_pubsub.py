@@ -72,3 +72,28 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+"""
+Hashes (objects)
+// Use HSET to store field-value pairs. Ideal for objects
+
+HSET user:101 name “John” age 30 email “john@example.com”
+
+Lists (ordered collections)
+// use LPUSH or RPUSH to create a list by adding elements to start or end
+
+LPUSH tasks “Email client” “Update docs”
+
+Sets (unique collections)
+// use SADD to create a set
+// every member in set is unique
+
+SADD tags:blog “redis” “database” “coding”
+
+Sorted Set (ranked collections)
+// use ZADD to create a set where each member is associated with a score for sorting
+
+ZADD leaderboard 100 “player1” 150 “player2”
+
+"""

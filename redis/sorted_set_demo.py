@@ -61,6 +61,18 @@ if __name__ == "__main__":
     main()
 
 """
+KEYS * 
+// to list all keys
+
+Sets = unique nonrepeating string elements
+Every element in a sorted set is associated with/ a floating pt value called score.
+This is why type is similar to a hash. Every element is mapped to a value.
+
+If A > B then A.score > B.score
+If A.score == B.score, then A > B lexicographically
+A != B since sorted sets only have unique elements
+
+
 https://redis.io/docs/latest/develop/data-types/sorted-sets/
 
 TYPE game_leaderboard
