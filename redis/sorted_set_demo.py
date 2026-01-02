@@ -59,3 +59,39 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""
+https://redis.io/docs/latest/develop/data-types/sorted-sets/
+
+TYPE game_leaderboard
+-> ZSET (sorted set)
+
+ZADD game_leaderboard 80 David
+// sets David with score of 80. Overwrites value if element “David” already exists
+// returns 1 if David does not exist
+// returns 0 if David exists
+
+ZINCRBY game_leaderboard 50 David
+// increments David's existing score by 50.
+// if previously 80, now 130.
+
+ZSCORE game_leaderboard David
+// returns David's score
+
+ZREM game_leaderboard David
+// remove the element
+
+ZRANK game_leaderboard David
+// get position of element “David” in ascending sorted order
+// 0 indexed
+
+ZREVRANK game_leaderboard David
+// get position of element “David” in descending sorted order
+// 0 indexed
+
+ZRANGE game_leaderboard 0 -1 WITHSCORES
+// see all items in sorted order with scores
+
+ZREVRANGE game_leaderboard 0 -1 WITHSCORES
+// see all items in reverse sorted order with scores
+"""
