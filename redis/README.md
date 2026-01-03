@@ -119,3 +119,30 @@ You can also interact with Redis directly using the command line interface.
         GEOADD cities_locations -122.4194 37.7749 "San Francisco"
         GEODIST cities_locations "San Francisco" "Los Angeles" km
         ```
+
+
+The key difference is **Persistence** vs. **Fire-and-Forget**.
+
+I've looked at your stream_vs_pubsub.py file, and it demonstrates this perfectly:
+
+### 1. Redis Pub/Sub (Fire-and-Forget)
+*   **Like a Radio Broadcast:** If you aren't listening *right now*, you miss the message forever.
+*   **No History:** Messages are not stored. If a subscriber crashes and restarts, it loses everything sent while it was down.
+*   **Fan-out:** Good for sending the same notification to many active clients at once (e.g., "User X is typing...").
+*   **In your code:** You published "Hello PubSub" *before* subscribing, so the subscriber received **nothing**.
+
+### 2. Redis Streams (Persistent Log)
+*   **Like a WhatsApp Group Chat:** Messages are stored in a log. You can read them now, later, or replay old messages from days ago.
+*   **Consumer Groups:** Multiple workers can share the load. If you have 100 messages and 2 consumers in a group, each processes 50. (Pub/Sub sends all 100 to both).
+*   **Reliability:** Supports "Acknowledgements" (ACK). If a worker crashes while processing a message, the message stays "pending" so another worker can pick it up.
+*   **In your code:** You added "Temperature=20" to the stream. Even though no one was reading, the data stayed there. A consumer could come along 10 minutes later and read it.
+
+### Summary Table
+
+| Feature | Pub/Sub | Streams |
+| :--- | :--- | :--- |
+| **Storage** | None (Ephemeral) | Persistent (Append-only log) |
+| **Delivery** | At-most-once (Fire & Forget) | At-least-once (Guaranteed) |
+| **History** | No | Yes (Time-travel capable) |
+| **Load Balancing** | No (All subs get all msgs) | Yes (Consumer Groups) |
+| **Use Case** | Real-time notifications, Chat | Job queues, Event sourcing, Audit logs |

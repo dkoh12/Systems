@@ -112,5 +112,13 @@ SPUBLISH
 
 To implement sharded pub/sub
 
+For sharded pub/sub, the channel itself is on one node (consistent hashing)
+Thus there's no server side broadcasting to other redis nodes in a redis cluster.
+However this means clients basically need a TCP connection to every node in redis
+cluster if they subscribe to multiple channels.
+
+Channels are not in Redis Keys
+Pub/Sub channels disappear the instant the last subscriber disconnects
+
 
 """
