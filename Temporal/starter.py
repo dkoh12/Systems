@@ -15,7 +15,7 @@ async def main():
     print("Starting workflow...")
     result = await client.execute_workflow(
         GreetingWorkflow.run,
-        "Temporal User",  # The argument to the workflow
+        "David",  # The argument to the workflow
         id="hello-workflow-id",
         task_queue="hello-world-task-queue",
     )
