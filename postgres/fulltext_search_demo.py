@@ -20,6 +20,7 @@ def main():
         print(f"Error connecting to PostgreSQL: {e}")
         return
 
+    # TSVector = Text Search Vector
     # 1. Setup: Create table with TSVECTOR column
     print("\n--- Setting up Full Text Search Table ---")
     try:
