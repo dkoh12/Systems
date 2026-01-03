@@ -38,3 +38,11 @@ python starter.py
 2.  Temporal Server queues the task in `hello-world-task-queue`.
 3.  `worker.py` picks up the task, executes `say_hello`, and returns the result.
 4.  `starter.py` receives the result and prints it.
+
+
+We've decoupled Trigger (starter.py) from Execution (worker.py)
+
+The flow is similar to Redis pub/sub. 
+We have a server running worker.py and another server running starter.py
+The Temporal server is used for routing and writes everything down. 
+

@@ -3,7 +3,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 # Import the workflow and activity we defined
-from workflow import GreetingWorkflow, say_hello
+from workflow import GreetingWorkflow, say_hello, get_weather, send_email
 
 async def main():
     # 1. Connect to the Temporal Server
@@ -16,7 +16,7 @@ async def main():
         client,
         task_queue="hello-world-task-queue",
         workflows=[GreetingWorkflow],
-        activities=[say_hello],
+        activities=[say_hello, get_weather, send_email],
     )
 
     print("Worker started. Listening for tasks...")
