@@ -51,3 +51,70 @@ Run with:
 ```bash
 python fulltext_search_demo.py
 ```
+
+----
+
+since we have pgadmin installed
+
+### How to access it
+1.  Open your browser to: **[http://localhost:5050](http://localhost:5050)**
+2.  **Login** with:
+    *   **Email:** `admin@admin.com`
+    *   **Password:** `root`
+
+### How to connect to your Database
+Once logged in, you need to add your server:
+1.  Click **"Add New Server"**.
+2.  **General** tab: Name it `Local Postgres`.
+3.  **Connection** tab:
+    *   **Host name/address:** postgres (Use the container name, not `localhost`, because pgAdmin is running inside the Docker network). (systems-postgres)
+    *   **Port:** `5432`
+    *   **Maintenance database:** postgres
+    *   **Username:** postgres
+    *   **Password:** `password`
+4.  Click **Save**.
+
+You will then see your `cities` and `documents` tables under **Schemas > public > Tables**.
+
+
+----
+Since your Postgres is running in a Docker container, the easiest way to access the CLI is to "exec" into the container.
+
+### 1. How to connect
+Run this command in your terminal to open the Postgres shell (`psql`):
+
+```bash
+docker exec -it systems-postgres psql -U postgres
+```
+
+### 2. Cheat Sheet for `psql` commands
+Once you are inside the shell (you will see a `postgres=#` prompt), here are the most useful commands:
+
+| Command | Description |
+| :--- | :--- |
+| `\l` | **List** all databases. |
+| `\c dbname` | **Connect** to a specific database. |
+| `\dt` | **List Tables** in the current database. |
+| `\d tablename` | **Describe** a table (show columns, types, indexes). |
+| `\x` | **Expanded display** (toggles on/off). Great for reading wide rows (like JSON or long text). |
+| `\q` | **Quit** the shell. |
+
+### 3. Queries to try (based on your demos)
+Since you just ran the demos, you can inspect the data:
+
+**Check the Geospatial data:**
+```sql
+SELECT * FROM cities;
+```
+
+**Check the Full Text Search data:**
+```sql
+-- You will see the 'search_vector' column is a weird looking string of lexemes
+SELECT id, title, search_vector FROM documents-- You will see the 'search_vector' column is a weird looking string of lexemes
+SELECT id, title, search_vector FROM documents;
+```
+
+**Run a manual SQL query:**
+```sql
+SELECT name, ST_AsText(location) FROM cities WHERE name = 'Paris';
+```
