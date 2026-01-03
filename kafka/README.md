@@ -39,6 +39,9 @@ kafka-server-start -daemon config/server.properties
 
 ```bash
 kafka-topics --list --bootstrap-server localhost:9092
+
+# see detailed partitions of a topic
+kafka-topics --bootstrap-server localhost:9092 --describe --topic test_topic
 ```
 
 ## Running the Demos

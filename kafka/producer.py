@@ -38,7 +38,8 @@ def main():
             
             # Produce message
             # We use the key to ensure ordering for specific keys if needed (optional)
-            key = str(i % 5) 
+            # Using mod 10 to ensure we hit all 3 partitions (keys '7' and '9' hit partition 0)
+            key = str(i % 10) 
             
             producer.produce(topic, key=key, value=value, callback=delivery_callback)
             
@@ -47,6 +48,7 @@ def main():
             
             print(f"Sent: {value}")
             
+            time.sleep(1) # Slow down to make it easier to follow
             i += 1
             time.sleep(1)
 
