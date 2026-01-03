@@ -86,7 +86,7 @@ services:
     image: temporalio/auto-setup:latest
     container_name: systems-temporal
     environment:
-      - DB=postgresql
+      - DB=postgres12
       - DB_PORT=5432
       - POSTGRES_USER=postgres
       - POSTGRES_PWD=password
