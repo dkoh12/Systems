@@ -1,0 +1,8 @@
+--- Worker 64241 started ---
+Worker 64241 is trying to join the election at /system_leader...
+
+[Leader] I (PID 64241) am now the LEADER! 👑
+[Leader] I am coordinating the cluster...
+[Leader] Still leading... (Heartbeat 1)
+[Leader] Still leading... (Heartbeat 2)
+[Leader] Still leading... (Heartbeat 3)
