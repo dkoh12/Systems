@@ -15,11 +15,13 @@ def setup_index():
     if es.indices.exists(index=INDEX_NAME):
         es.indices.delete(index=INDEX_NAME)
     
+    # ElasticSearch creates an physical data structure per field based on its data type
     settings = {
         "mappings": {
             "properties": {
                 "title": {
-                    "type": "text",
+                    "type": "text", # inverted index 
+                    # full text search, fuzzy search
                     "analyzer": "english"  # Handles stemming, stopwords
                 },
                 "content": {
@@ -27,9 +29,11 @@ def setup_index():
                     "analyzer": "english" # Handles stemming
                 },
                 "category": {
+                    # inverted index + Doc Values (exact match + sorting / aggregation)
                     "type": "keyword"      # Exact match only (no tokenization)
                 },
                 "published_date": {
+                    # BKD Tree (range queries)
                     "type": "date"
                 }
             }
@@ -107,6 +111,7 @@ def search_demo():
 
     print("\n--- 3. Boolean Query (Compound) ---")
     # Must match 'python' AND must NOT match 'advanced'
+    # search each field in its resepective index and then intersects the two lists
     query = {
         "query": {
             "bool": {

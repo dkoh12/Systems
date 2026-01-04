@@ -16,9 +16,9 @@ def setup_index():
     settings = {
         "mappings": {
             "properties": {
-                "image_name": { "type": "text" },
-                "description": { "type": "text" },
-                "image_vector": {
+                "image_name": { "type": "text" }, # inverted index
+                "description": { "type": "text" }, # inverted index
+                "image_vector": { # HNSW index
                     "type": "dense_vector",
                     "dims": 3,           # 3-dimensional vector for simplicity
                     "index": True,       # Enable HNSW indexing for fast kNN

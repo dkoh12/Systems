@@ -1,5 +1,8 @@
 Elasticsearch is famous because it doesn't just use one type of index (like a B-Tree in SQL). It uses different data structures depending on the **data type** to make search instant.
 
+We have an index for every column (every data field) in elasticsearch. 
+LSM Tree (immutable segments) underneath the hood. This balloons writes. It demands significantly more RAM to function. 
+
 Here are the 4 main indexing structures it uses under the hood:
 
 ### 1. The Inverted Index (For Text)
@@ -8,6 +11,15 @@ This is the "Secret Sauce" of search engines. It works exactly like the **Index 
 *   **How it works:** Instead of storing "Doc 1 contains 'Apple'", it stores "The word 'Apple' appears in Doc 1, Doc 5, and Doc 9".
 *   **Why it's fast:** To find "Apple", it doesn't scan every row. It just looks up "Apple" in the dictionary and instantly gets the list of IDs.
 *   **Used for:** `text` fields (Full-text search).
+
+
+Inverted Index can do exact match and fuzzy search. 
+Fuzzy search would be slow if we searched through all the words in index and did "edit distance". Instead we use Levenshtein Automation. 
+
+Elasticsearch doesn't scann. It builds a Finite State Automation (DFA) for your query term. Then this term dictionary in Lucene is stored as a prefix tree (FST - Finite State Transducer). The engine walks the Term Dictionary and Query Automation simultaneously. 
+
+Fuzzy search on an inverted index is fast because it turns the problem into a graph traversal problem. It only visits the tiny slice of the term dictionary that could possibly match. 
+
 
 ### 2. BKD Trees (For Numbers, Dates, & Geo)
 Standard Inverted Indexes are bad at ranges (e.g., "Price > 100"). For this, Elasticsearch uses **Block K-Dimensional (BKD) Trees**.

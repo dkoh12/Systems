@@ -15,6 +15,7 @@ def setup_index():
     
     settings = {
         "mappings": {
+            # BKD Tree
             "properties": {
                 "name": { "type": "text" },
                 "location": { "type": "geo_point" } # Latitude/Longitude
@@ -66,6 +67,7 @@ def geo_search_demo():
     
     print(f"Searching for places within {distance} of Times Square...")
     
+    # search individual terms and then intersect / merge results
     query = {
         "query": {
             "bool": {
