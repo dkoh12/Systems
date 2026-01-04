@@ -1,1 +1,0 @@
-[2m2026-01-03T22:54:48.565740Z[0m [33m WARN[0m [2mtemporalio_sdk_core::worker::heartbeat[0m[2m:[0m Worker heartbeating configured for runtime, but server version does not support it.

@@ -56,7 +56,7 @@ Temporal is a system that:
 1.  **Records** every step to a DB (Postgres).
 2.  **Replays** your code from the start to restore state.
 3.  **Skips** work that was already done by checking the history.
-4.  
+
 
 -------
 
@@ -101,3 +101,10 @@ Because the **Workflow** code is replayed (re-run) every time the server recover
 *   If you put it in an **Activity**:
     *   Run 1: Charges card. Temporal records "Activity Completed" in DB. Worker crashes.
     *   Replay 1: Sees "Activity Completed" in DB. **Skips** the execution. Returns the saved result. **Safe!**
+
+----
+
+The temporal server is really just an in-memory queue backed by postgres for persistence. The worker sees the workflow to run in the queue and runs it. Every time it sees an activity to run, it puts the activity back on the temporal server's queue. Then another worker (ideally the same worker) runs the activity. At each stage temporal records events like workflow started, activity started, activity finished. If something crashes. the workflow starts from the beginning. But the individual worker will look up the history DB first. If the result is there in the history db, it will skip. This ensures idempotency. It will continue until an entry is not in the history db at which point it will resume executing it. temporal also handles retries internally. 
+
+Temporal has an optimization called "Sticky Execution".
+Normally, any worker can pick up any task. However, Temporal tries to send the next step to the same worker that has the workflow history already cached in memory. This avoids downloading the entire history from the database again, making it much faster.
