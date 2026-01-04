@@ -119,8 +119,10 @@ services:
 
   # --- Flink (JobManager + TaskManager) ---
   flink-jobmanager:
-    image: flink:latest
+    build: ./Flink
     container_name: systems-flink-jm
+    volumes:
+      - ./Flink:/opt/flink/user_code
     ports:
       - "8081:8081"
     command: jobmanager
@@ -130,8 +132,10 @@ services:
         jobmanager.rpc.address: flink-jobmanager
 
   flink-taskmanager:
-    image: flink:latest
+    build: ./Flink
     container_name: systems-flink-tm
+    volumes:
+      - ./Flink:/opt/flink/user_code
     depends_on:
       - flink-jobmanager
     command: taskmanager

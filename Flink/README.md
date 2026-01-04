@@ -2,43 +2,78 @@
 
 Apache Flink is a framework for stateful computations over unbounded and bounded data streams.
 
-## Prerequisites
+## Running with Docker (Recommended)
 
-1.  **Apache Flink**: Installed via Homebrew (`brew install apache-flink`).
-2.  **Java**: Required to run Flink (installed automatically by brew).
+We have set up a custom Docker environment that includes Python and PyFlink.
 
-## 1. Start the Local Flink Cluster
-
-Flink runs as a cluster (JobManager + TaskManagers). You can start a local mini-cluster:
+### 1. Start the Cluster
+Make sure to build the containers to include the Python dependencies:
 
 ```bash
-# Start the cluster
+docker-compose up -d --build flink-jobmanager flink-taskmanager
+```
+
+*   **Web UI**: [http://localhost:8081](http://localhost:8081)
+
+### 2. Run Python Examples
+
+All scripts are mounted to `/opt/flink/user_code` inside the container.
+
+#### A. `simple_demo.py` (Batch)
+Processes a static list of sentences.
+
+```bash
+docker exec -it systems-flink-jm python3 /opt/flink/user_code/simple_demo.py
+```
+
+#### B. `socket_demo.py` (Streaming)
+Listens to a network socket.
+
+**Terminal 1 (Start Data Server):**
+```bash
+docker exec -it systems-flink-jm nc -l 9000
+```
+
+**Terminal 2 (Run Flink Job):**
+```bash
+# We must use the container name 'systems-flink-jm' so the TaskManager can find the netcat server
+docker exec -it systems-flink-jm python3 /opt/flink/user_code/socket_demo.py systems-flink-jm 9000
+```
+
+Type words into **Terminal 1** to see the counts in **Terminal 2**.
+
+---
+
+## Running Locally (Mac/Linux)
+
+If you prefer to run outside Docker, you need Java and Flink installed.
+
+### Prerequisites
+1.  **Apache Flink**: `brew install apache-flink`
+2.  **Java**: (Installed by brew)
+3.  **Python**: PyFlink requires Python 3.8 - 3.11. (Current system Python 3.14 is too new).
+
+### Start Local Cluster
+```bash
 /opt/homebrew/opt/apache-flink/libexec/bin/start-cluster.sh
 ```
 
-*   **Web UI**: Once started, access the dashboard at [http://localhost:8081](http://localhost:8081).
-
-## 2. Python Code Examples (PyFlink)
-
-I have included two Python scripts to demonstrate Flink logic. 
-
-> **Note:** PyFlink currently supports Python 3.8 - 3.11. If you are running Python 3.14 (as in the root `.venv`), you may need to create a separate environment with an older Python version to run these scripts directly.
-
-### A. `simple_demo.py` (Batch-like)
-Processes a static list of sentences and counts words.
+### Run Java Example
 ```bash
-python simple_demo.py
+# Terminal 1
+nc -l 9000
+
+# Terminal 2
+flink run /opt/homebrew/opt/apache-flink/libexec/examples/streaming/SocketWindowWordCount.jar --port 9000
+
+# Terminal 3 (View Logs)
+tail -f /opt/homebrew/opt/apache-flink/libexec/log/flink-*-taskexecutor-*.out
 ```
 
-### B. `socket_demo.py` (Streaming)
-Listens to a network socket (like the Java example).
-1. Start `nc -l 9000` in one terminal.
-2. Run `python socket_demo.py` in another.
-3. Type in the netcat terminal to see results.
-
-## 3. Run the Java Example (Built-in)
-
-If you cannot run the Python scripts due to version constraints, you can run the built-in Java example:
+### Stop Cluster
+```bash
+/opt/homebrew/opt/apache-flink/libexec/bin/stop-cluster.sh
+```
 
 ### Step A: Start a Text Stream (Terminal 1)
 We use `nc` (netcat) to create a simple text server on port 9000.
