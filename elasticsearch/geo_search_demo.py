@@ -22,6 +22,7 @@ def setup_index():
         }
     }
     
+    # for geo_point, we're using BKD tree index (kind of like R-tree)
     es.indices.create(index=INDEX_NAME, body=settings)
     print(f"Index '{INDEX_NAME}' created with geo_point field.")
 
