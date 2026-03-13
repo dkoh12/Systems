@@ -5,6 +5,8 @@ import time
 Redis Streams + Consumer Groups Demo
 Stream: order_events
 
+https://devopedia.org/redis-streams
+
 Key idea:
 - A consumer GROUP lets multiple consumers share the work of processing a stream.
 - Each message is delivered to only ONE consumer in the group (like a task queue).
